@@ -1,0 +1,44 @@
+{
+  "contacts": [
+    {
+      "fullname": "ماردین عزت پناه",
+      "photo": "https://avatars.githubusercontent.com/u/93155550?v=4",
+      "mobile": "09199367939",
+      "email": "mardin.ep1@gmail.com",
+      "job": "برنامه نویس",
+      "group": "1",
+      "id": 1
+    },
+    {
+      "fullname": "پرین حسنی",
+      "photo": "https://avatars.githubusercontent.com/u/36565595?v=4",
+      "mobile": "09199451122",
+      "email": "parin.hn1@gmail.com",
+      "job": "شاعر",
+      "group": "2",
+      "id": 2
+    }
+  ],
+  "groups": [
+    {
+      "id": "1",
+      "name": "همکار"
+    },
+    {
+      "id": "2",
+      "name": "دوست"
+    },
+    {
+      "id": "3",
+      "name": "فامیل"
+    },
+    {
+      "id": "4",
+      "name": "سرویس"
+    },
+    {
+      "id": "5",
+      "name": "آشنا"
+    }
+  ]
+}
