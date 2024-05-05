@@ -5,6 +5,7 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { createContact, getAllContacts, getAllGroups } from "./services/contactService";
 import AddContact from "./components/contacts/AddContact";
 import ViewContact from "./components/contacts/ViewContact";
+import EditContact from "./components/contacts/EditContact";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -94,6 +95,15 @@ const App = () => {
               contact={getContact}
               groups={getGroups}
               createContactForm={createContactForm}
+            />
+          }
+        />
+        <Route
+          path="/contacts/edit/:contactId"
+          element={
+            <EditContact
+              forceRender={forceRender}
+              setForceRender={setForceRender}
             />
           }
         />

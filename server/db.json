@@ -13,7 +13,9 @@
       "id": "2",
       "name": "پرین",
       "photo": "https://avatars.githubusercontent.com/u/36565595?v=4",
-      "mobile": "09199451122",
+      "mobile": [
+        "09199451132"
+      ],
       "email": "parin.hn1@gmail.com",
       "job": "شاعر",
       "group": "2"

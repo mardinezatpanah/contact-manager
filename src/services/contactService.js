@@ -26,3 +26,8 @@ export const getGroup = (groupId) => {
   const url = `${SERVER_URL}/groups/${groupId}`;
   return axios.get(url);
 };
+
+export const updateContact = (contact, contactId) => {
+  const url = `${SERVER_URL}/contacts/${contactId}`;
+  return axios.put(url, contact);
+};

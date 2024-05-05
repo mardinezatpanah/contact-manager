@@ -9,16 +9,16 @@ const Contact = ({ contact }) => {
       <div style={{ backgroundColor: CURRENTLINE }} className="card my-2">
         <div className="card-body">
           <div className="row align-items-center d-flex justify-content-around">
-            <div className="col-md-4 col-sm-4">
+            <div className="col-sm-4">
               <img
                 src={contact.photo}
-                alt={contact.fullname}
-                style={{ border: `1px solid ${PURPLE}` }}
+                alt={contact.name}
+                style={{ border: `1px solid ${PURPLE}`, width: "100%" }}
                 className="img-fluid rounded"
               />
             </div>
-            <div className="col-md-7 col-sm-7">
-              <ul className="list-group">
+            <div className="col-sm-7">
+              <ul className="list-group px-0  my-3 my-sm-0" >
                 <li className="list-group-item list-group-item-dark">
                   نام و نام خانوداگی :{"  "}
                   <span className="fw-bold">{contact.name}</span>
@@ -35,7 +35,7 @@ const Contact = ({ contact }) => {
                 </li>
               </ul>
             </div>
-            <div className="col-md-1 col-sm-1 d-flex flex-column align-items-center">
+            <div className="col-sm-1 px-3 d-flex flex-column align-items-center">
               <Link
                 to={`/contacts/${contact.id}`}
                 className="btn my-1"
@@ -45,7 +45,7 @@ const Contact = ({ contact }) => {
               </Link>
 
               <Link
-                to="#"
+                to={`/contacts/edit/${contact.id}`}
                 className="btn my-1"
                 style={{ backgroundColor: CYAN }}
               >
