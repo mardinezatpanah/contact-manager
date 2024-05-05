@@ -9,7 +9,7 @@ import {
   updateContact,
 } from "../../services/contactService";
 import Spinner from "../Spinner";
-import { RED, PURPLE } from "../../helpers/colors";
+import { CYAN, PURPLE } from "../../helpers/colors";
 
 const EditContact = ({ forceRender, setForceRender }) => {
   const { contactId } = useParams();
@@ -176,7 +176,7 @@ const EditContact = ({ forceRender, setForceRender }) => {
                       <Link
                         to={"/contacts"}
                         className="btn mx-2"
-                        style={{ backgroundColor: RED }}
+                        style={{ backgroundColor: CYAN }}
                       >
                         انصراف
                       </Link>

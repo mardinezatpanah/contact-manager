@@ -1,17 +1,43 @@
 /* eslint-disable react/prop-types */
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import mantaking from "../../assets/man-taking-note.png"
 
 import Spinner  from "../Spinner";
 import { RED, PURPLE } from "../../helpers/colors";
+import { createContact } from "../../services/contactService";
 
 const AddContact = ({
   loading,
   contact,
-  setContactInfo,
+  getContact,
+  setContact,
   groups,
-  createContactForm,
+  forceRender,
+  setForceRender
 }) => {
+  const navigate = useNavigate();
+
+  const createContactForm = async (event) => {
+    event.preventDefault();
+    try {
+      const { status } = await createContact(getContact);
+
+      if (status === 201) {
+        setContact({});
+        setForceRender(!forceRender);
+        navigate("/contacts");
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const setContactInfo = (event) => {
+    setContact({
+      ...getContact,
+      [event.target.name]: event.target.value,
+    });
+  };
   return (
     <>
       {loading ? (

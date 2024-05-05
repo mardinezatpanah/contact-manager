@@ -16,7 +16,9 @@
       "mobile": [
         "09199451132"
       ],
-      "email": "parin.hn1@gmail.com",
+      "email": [
+        "parin.ep1@gmail.com"
+      ],
       "job": "شاعر",
       "group": "2"
     },
@@ -28,6 +30,15 @@
       "email": "ramin.ep1@gmail.com",
       "job": "مدیر بازاریابی",
       "group": "3"
+    },
+    {
+      "id": "4bb5",
+      "name": "شادی",
+      "photo": "https://avatars.githubusercontent.com/u/61593022?v=4",
+      "mobile": "09185642823",
+      "email": "shadi.ep1@gmail.c0m",
+      "job": "معمار",
+      "group": "5"
     }
   ],
   "groups": [

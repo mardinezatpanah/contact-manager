@@ -31,3 +31,8 @@ export const updateContact = (contact, contactId) => {
   const url = `${SERVER_URL}/contacts/${contactId}`;
   return axios.put(url, contact);
 };
+
+export const deleteContact = (contactId) => {
+  const url = `${SERVER_URL}/contacts/${contactId}`;
+  return axios.delete(url);
+};
