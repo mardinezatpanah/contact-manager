@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import Contact from "./Contact";
 import Spinner from "../Spinner";
-import { CURRENTLINE, ORANGE, PINK } from "../../helpers/colors";
+import { CURRENTLINE, ORANGE, PURPLE } from "../../helpers/colors";
 import NotFound from "../../assets/no-found.gif";
+import { Link } from "react-router-dom";
 
 
 const Contacts = ({ contacts, loading }) => {
@@ -13,10 +14,14 @@ const Contacts = ({ contacts, loading }) => {
           <div className="row">
             <div className="col mt-2">
               <p className="h3">
-                <button className="btn mx-2" style={{ backgroundColor: PINK }}>
+              <Link
+                  to={"/contacts/add"}
+                  className="btn m-2"
+                  style={{ backgroundColor: PURPLE }}
+                >
                   ساخت مخاطب جدید
                   <i className="fa fa-plus-circle mx-2" />
-                </button>
+                </Link>
               </p>
             </div>
           </div>

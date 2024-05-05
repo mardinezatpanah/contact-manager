@@ -7,7 +7,7 @@
       "email": "mardin.ep1@gmail.com",
       "job": "برنامه نویس",
       "group": "1",
-      "id": 1
+      "id": "1"
     },
     {
       "fullname": "پرین حسنی",
@@ -16,7 +16,16 @@
       "email": "parin.hn1@gmail.com",
       "job": "شاعر",
       "group": "2",
-      "id": 2
+      "id": "2"
+    },
+    {
+      "id": "6f1c",
+      "fullname": "رامین",
+      "photo": "https://avatars.githubusercontent.com/u/121355412?v=4",
+      "mobile": "09398191898",
+      "email": "ramin.ep1@gmail.c0m",
+      "job": "مدیر بازاریابی",
+      "group": "3"
     }
   ],
   "groups": [
