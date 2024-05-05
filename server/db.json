@@ -1,29 +1,29 @@
 {
   "contacts": [
     {
-      "fullname": "ماردین عزت پناه",
+      "id": "1",
+      "name": "ماردین ",
       "photo": "https://avatars.githubusercontent.com/u/93155550?v=4",
       "mobile": "09199367939",
       "email": "mardin.ep1@gmail.com",
       "job": "برنامه نویس",
-      "group": "1",
-      "id": "1"
+      "group": "1"
     },
     {
-      "fullname": "پرین حسنی",
+      "id": "2",
+      "name": "پرین",
       "photo": "https://avatars.githubusercontent.com/u/36565595?v=4",
       "mobile": "09199451122",
       "email": "parin.hn1@gmail.com",
       "job": "شاعر",
-      "group": "2",
-      "id": "2"
+      "group": "2"
     },
     {
       "id": "6f1c",
-      "fullname": "رامین",
+      "name": "رامین",
       "photo": "https://avatars.githubusercontent.com/u/121355412?v=4",
       "mobile": "09398191898",
-      "email": "ramin.ep1@gmail.c0m",
+      "email": "ramin.ep1@gmail.com",
       "job": "مدیر بازاریابی",
       "group": "3"
     }

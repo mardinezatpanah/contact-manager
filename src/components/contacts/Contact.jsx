@@ -21,7 +21,7 @@ const Contact = ({ contact }) => {
               <ul className="list-group">
                 <li className="list-group-item list-group-item-dark">
                   نام و نام خانوداگی :{"  "}
-                  <span className="fw-bold">{contact.fullname}</span>
+                  <span className="fw-bold">{contact.name}</span>
                 </li>
 
                 <li className="list-group-item list-group-item-dark">
@@ -37,7 +37,7 @@ const Contact = ({ contact }) => {
             </div>
             <div className="col-md-1 col-sm-1 d-flex flex-column align-items-center">
               <Link
-                to="#"
+                to={`/contacts/${contact.id}`}
                 className="btn my-1"
                 style={{ backgroundColor: ORANGE }}
               >

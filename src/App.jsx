@@ -4,6 +4,7 @@ import Contacts from "./components/contacts/Contacts";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { createContact, getAllContacts, getAllGroups } from "./services/contactService";
 import AddContact from "./components/contacts/AddContact";
+import ViewContact from "./components/contacts/ViewContact";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -96,6 +97,7 @@ const App = () => {
             />
           }
         />
+        <Route path="/contacts/:contactId" element={<ViewContact />} />
       </Routes>
     </>
   );
