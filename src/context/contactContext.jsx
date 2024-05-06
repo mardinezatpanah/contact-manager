@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { createContact, deleteContact, getAllContacts, getAllGroups } from "../services/contactService";
 import { confirmAlert } from "react-confirm-alert";
 import { CURRENTLINE, CYAN, PURPLE, RED } from "../helpers/colors";
+import toast from "react-hot-toast";
 
 export const ContactContext = createContext();
 
@@ -46,15 +47,16 @@ export const ContactProvider = ({ children }) => {
     fetchData();
   }, []);
 
-  const createContactForm = async (event) => {
-    event.preventDefault();
+  const createContactForm = async (values) => {
+    
     try {
       setLoading((prevLoading) => !prevLoading);
-      const { status, data } = await createContact(contact);
+      const { status, data } = await createContact(values);
 
       if (status === 201) {
         const allContacts = [...contacts, data];
 
+        toast.success("مخاطب با موفقیت ساخته شد", { icon: "🚀" });
         setContacts(allContacts);
         setFilteredContacts(allContacts);
 
@@ -64,6 +66,7 @@ export const ContactProvider = ({ children }) => {
       }
     } catch (err) {
       console.log(err.message);
+      toast.error("مشکلی رخ داده است", { icon: "❌" });
       setLoading((prevLoading) => !prevLoading);
     }
   };
@@ -124,7 +127,7 @@ export const ContactProvider = ({ children }) => {
 
       
       const { status } = await deleteContact(contactId);
-
+      toast.error("مخاطب با موفقیت حذف شد", { icon: "💣" });
       if (status !== 200) {
         setContacts(allContacts);
         setFilteredContacts(allContacts);

@@ -1,26 +1,19 @@
-/* eslint-disable react/prop-types */
-import { useContext, useEffect, useState } from "react";
-import mantaking from "../../assets/man-taking-note.png"
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useContext, useState } from "react";
 
-import {
-  getContact,
-  updateContact,
-} from "../../services/contactService";
-import Spinner from "../Spinner";
-import { CYAN, PURPLE } from "../../helpers/colors";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import toast from "react-hot-toast";
+import mantaking from "../../assets/man-taking-note.png"
 import { ContactContext } from "../../context/contactContext";
+import { getContact, updateContact } from "../../services/contactService";
+import Spinner from "../Spinner";
+import { CYAN, ORANGE, PURPLE } from "../../helpers/colors";
+import { contactSchema } from "../../validations/contactValidation";
 
 const EditContact = () => {
   const { contactId } = useParams();
-  const {
-    contacts,
-    setContacts,
-    setFilteredContacts,
-    loading,
-    setLoading,
-    groups,
-  } = useContext(ContactContext);
+  const { contacts, setContacts, setFilteredContacts, loading, setLoading, groups } =
+    useContext(ContactContext);
 
   const navigate = useNavigate();
 
@@ -44,21 +37,15 @@ const EditContact = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onContactChange = (event) => {
-    setContact({
-      ...contact,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const submitForm = async (event) => {
-    event.preventDefault();
+  const submitForm = async (values) => {
     try {
       setLoading(true);
-      const { data, status } = await updateContact(contact, contactId);
+      const { data, status } = await updateContact(values, contactId);
 
       if (status === 200) {
         setLoading(false);
+
+        toast.success("مخاطب با موفقیت ویرایش شد", { icon: "✅" });
 
         const allContacts = [...contacts];
         const contactIndex = allContacts.findIndex(
@@ -73,6 +60,7 @@ const EditContact = () => {
       }
     } catch (err) {
       console.log(err);
+      toast.error("مشکلی رخ داده است", { icon: "❌" });
       setLoading(false);
     }
   };
@@ -87,112 +75,143 @@ const EditContact = () => {
             <div className="container">
               <div className="row my-2">
                 <div className="col text-center">
-                  <p className="h4 fw-bold" style={{ color: PURPLE }}>
+                  <p className="h4 fw-bold" style={{ color: ORANGE }}>
                     ویرایش مخاطب
                   </p>
                 </div>
               </div>
-              <hr style={{ backgroundColor: PURPLE }} />
+              <hr style={{ backgroundColor: ORANGE }} />
               <div
                 className="row p-2 w-75 mx-auto align-items-center"
                 style={{ backgroundColor: "#44475a", borderRadius: "1em" }}
               >
                 <div className="col-md-8">
-                  <form onSubmit={submitForm}>
-                    <div className="mb-2">
-                      <input
-                        name="name"
-                        type="text"
-                        className="form-control"
-                        value={contact.name}
-                        onChange={onContactChange}
-                        required={true}
-                        placeholder="نام و نام خانوادگی"
-                      />
-                    </div>
-                    <div className="mb-2">
-                      <input
-                        name="photo"
-                        type="text"
-                        value={contact.photo}
-                        onChange={onContactChange}
-                        className="form-control"
-                        required={true}
-                        placeholder="آدرس تصویر"
-                      />
-                    </div>
-                    <div className="mb-2">
-                      <input
-                        name="mobile"
-                        type="number"
-                        className="form-control"
-                        value={contact.mobile}
-                        onChange={onContactChange}
-                        required={true}
-                        placeholder="شماره موبایل"
-                      />
-                    </div>
-                    <div className="mb-2">
-                      <input
-                        name="email"
-                        type="email"
-                        className="form-control"
-                        value={contact.email}
-                        onChange={onContactChange}
-                        required={true}
-                        placeholder="آدرس ایمیل"
-                      />
-                    </div>
-                    <div className="mb-2">
-                      <input
-                        name="job"
-                        type="text"
-                        className="form-control"
-                        value={contact.job}
-                        onChange={onContactChange}
-                        required={true}
-                        placeholder="شغل"
-                      />
-                    </div>
-                    <div className="mb-2">
-                      <select
-                        name="group"
-                        value={contact.group}
-                        onChange={onContactChange}
-                        required={true}
-                        className="form-control"
-                      >
-                        <option value="">انتخاب گروه</option>
-                        {groups.length > 0 &&
-                          groups.map((group) => (
-                            <option key={group.id} value={group.id}>
-                              {group.name}
-                            </option>
-                          ))}
-                      </select>
-                    </div>
-                    <div className="mb-2">
-                      <input
-                        type="submit"
-                        className="btn"
-                        style={{ backgroundColor: PURPLE }}
-                        value="ویرایش مخاطب"
-                      />
-                      <Link
-                        to={"/contacts"}
-                        className="btn mx-2"
-                        style={{ backgroundColor: CYAN }}
-                      >
-                        انصراف
-                      </Link>
-                    </div>
-                  </form>
+                  <Formik
+                    initialValues={contact}
+                    validationSchema={contactSchema}
+                    onSubmit={(values) => {
+                      submitForm(values);
+                    }}
+                  >
+                    <Form>
+                      <div className="mb-2">
+                        <Field
+                          name="name"
+                          type="text"
+                          className="form-control"
+                          placeholder="نام و نام خانوادگی"
+                        />
+                        <ErrorMessage
+                          name="name"
+                          render={(msg) => (
+                            <div className="text-danger">{msg}</div>
+                          )}
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <Field
+                          name="photo"
+                          type="text"
+                          className="form-control"
+                          placeholder="آدرس تصویر"
+                        />
+
+                        <ErrorMessage
+                          name="photo"
+                          render={(msg) => (
+                            <div className="text-danger">{msg}</div>
+                          )}
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <Field
+                          name="mobile"
+                          type="number"
+                          className="form-control"
+                          placeholder="شماره موبایل"
+                        />
+
+                        <ErrorMessage
+                          name="mobile"
+                          render={(msg) => (
+                            <div className="text-danger">{msg}</div>
+                          )}
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <Field
+                          name="email"
+                          type="email"
+                          className="form-control"
+                          placeholder="آدرس ایمیل"
+                        />
+
+                        <ErrorMessage
+                          name="email"
+                          render={(msg) => (
+                            <div className="text-danger">{msg}</div>
+                          )}
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <Field
+                          name="job"
+                          type="text"
+                          className="form-control"
+                          placeholder="شغل"
+                        />
+
+                        <ErrorMessage
+                          name="job"
+                          render={(msg) => (
+                            <div className="text-danger">{msg}</div>
+                          )}
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <Field
+                          name="group"
+                          as="select"
+                          className="form-control"
+                        >
+                          <option value="">انتخاب گروه</option>
+                          {groups.length > 0 &&
+                            groups.map((group) => (
+                              <option key={group.id} value={group.id}>
+                                {group.name}
+                              </option>
+                            ))}
+                        </Field>
+
+                        <ErrorMessage
+                          name="group"
+                          render={(msg) => (
+                            <div className="text-danger">{msg}</div>
+                          )}
+                        />
+                      </div>
+                      <div className="mx-2">
+                        <input
+                          type="submit"
+                          className="btn"
+                          style={{ backgroundColor: PURPLE }}
+                          value="ویرایش مخاطب"
+                        />
+                        <Link
+                          to={"/contacts"}
+                          className="btn mx-2"
+                          style={{ backgroundColor: CYAN }}
+                        >
+                          انصراف
+                        </Link>
+                      </div>
+                    </Form>
+                  </Formik>
                 </div>
                 <div className="col-md-4">
                   <img
                     src={contact.photo}
-                    alt=""
-                    className="img-fluid rounded mb-5 "
+                    className="img-fluid rounded"
                     style={{ border: `1px solid ${PURPLE}` }}
                   />
                 </div>
@@ -203,7 +222,7 @@ const EditContact = () => {
               <img
                 src={mantaking}
                 height="300px"
-                style={{ opacity: "50%" }}
+                style={{ opacity: "60%" }}
               />
             </div>
           </section>
