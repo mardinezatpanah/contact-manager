@@ -1,27 +1,20 @@
 /* eslint-disable react/prop-types */
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createContact, deleteContact, getAllContacts, getAllGroups } from "../services/contactService";
 import { confirmAlert } from "react-confirm-alert";
 import { CURRENTLINE, CYAN, PURPLE, RED } from "../helpers/colors";
 import toast from "react-hot-toast";
+import { useImmer } from "use-immer";
+import _ from "lodash";
 
 export const ContactContext = createContext();
 
 export const ContactProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
-  const [contacts, setContacts] = useState([]);
-  const [filteredContacts, setFilteredContacts] = useState([]);
-  const [groups, setGroups] = useState([]);
-  const [contact, setContact] = useState({
-    name: "",
-    photo: "",
-    mobile: "",
-    email: "",
-    job: "",
-    group: "",
-  });
-  const [contactQuery, setContactQuery] = useState({ text: "" });
+  const [loading, setLoading] = useImmer(false);
+  const [contacts, setContacts] = useImmer([]);
+  const [filteredContacts, setFilteredContacts] = useImmer([]);
+  const [groups, setGroups] = useImmer([]);
 
   const navigate = useNavigate();
 
@@ -45,22 +38,24 @@ export const ContactProvider = ({ children }) => {
     };
 
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const createContactForm = async (values) => {
-    
     try {
-      setLoading((prevLoading) => !prevLoading);
+      setLoading((draft) => !draft);
+
       const { status, data } = await createContact(values);
 
       if (status === 201) {
-        const allContacts = [...contacts, data];
-
         toast.success("مخاطب با موفقیت ساخته شد", { icon: "🚀" });
-        setContacts(allContacts);
-        setFilteredContacts(allContacts);
 
-        setContact({});
+        setContacts((draft) => {
+          draft.push(data);
+        });
+        setFilteredContacts((draft) => {
+          draft.push(data);
+        });
         setLoading((prevLoading) => !prevLoading);
         navigate("/contacts");
       }
@@ -69,13 +64,6 @@ export const ContactProvider = ({ children }) => {
       toast.error("مشکلی رخ داده است", { icon: "❌" });
       setLoading((prevLoading) => !prevLoading);
     }
-  };
-
-  const onContactChange = (event) => {
-    setContact({
-      ...contact,
-      [event.target.name]: event.target.value,
-    });
   };
 
   const confirmDelete = (contactId, contactName) => {
@@ -127,42 +115,38 @@ export const ContactProvider = ({ children }) => {
 
       
       const { status } = await deleteContact(contactId);
-      toast.error("مخاطب با موفقیت حذف شد", { icon: "💣" });
+      toast.success("مخاطب با موفقیت حذف شد", { icon: "💣" });
       if (status !== 200) {
         setContacts(allContacts);
         setFilteredContacts(allContacts);
       }
     } catch (err) {
       console.log(err.message);
-
+toast.error("مشکلی رخ داده است", { icon: "❌" });
       setContacts(allContacts);
       setFilteredContacts(allContacts);
     }
   };
 
-  const contactSearch = (event) => {
-    setContactQuery({ ...contactQuery, text: event.target.value });
-    const allContacts = contacts.filter((contact) => {
-      return contact.name
-        .toLowerCase()
-        .includes(event.target.value.toLowerCase());
-    });
+  const contactSearch = _.debounce((query) => {
+    if (!query) return setFilteredContacts([...contacts]);
 
-    setFilteredContacts(allContacts);
-  };
+    setFilteredContacts((draft) =>
+      draft.filter((c) =>
+        c.name.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  }, 1000);
 return (
   <ContactContext.Provider
     value={{
       loading,
       setLoading,
-      contact,
       setContacts,
       setFilteredContacts,
-      contactQuery,
       contacts,
       filteredContacts,
       groups,
-      onContactChange,
       deleteContact: confirmDelete,
       createContact: createContactForm,
       contactSearch,
